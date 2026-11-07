@@ -1,18 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { Menu, X, Flower2 } from "lucide-react";
 import { NAV_LINKS } from "@/lib/site";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#top");
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Scroll-spy: highlight the section currently in view.
+  useEffect(() => {
+    const ids = ["experiments", "playground", "about", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setActive(`#${e.target.id}`);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -39,9 +61,19 @@ export function Navbar() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className="text-sm font-medium text-ink/80 transition-colors hover:text-deep"
+                aria-current={active === l.href ? "true" : undefined}
+                className={`relative text-sm font-medium transition-colors hover:text-deep ${
+                  active === l.href ? "text-deep" : "text-ink/80"
+                }`}
               >
                 {l.label}
+                {active === l.href && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1.5 left-0 h-0.5 w-full rounded-full bg-bloom"
+                    aria-hidden="true"
+                  />
+                )}
               </a>
             </li>
           ))}
@@ -65,6 +97,13 @@ export function Navbar() {
           {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
         </button>
       </nav>
+
+      {/* scroll progress — the journey through the garden */}
+      <motion.div
+        aria-hidden="true"
+        style={{ scaleX: progress }}
+        className="h-[3px] origin-left bg-gradient-to-r from-sky via-bloom to-deep"
+      />
 
       {open && (
         <div className="glass border-t border-white/60 md:hidden">

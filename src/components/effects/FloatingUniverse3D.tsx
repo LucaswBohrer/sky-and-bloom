@@ -2,8 +2,36 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
+
+/** Pointer parallax rig: the camera drifts gently toward the cursor.
+ *  Reads window pointer events (the canvas itself is pointer-events-none),
+ *  lerps for softness, and stays still when reduced motion is preferred. */
+function Rig() {
+  const pointer = useRef({ x: 0, y: 0 });
+  const reduce =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => {
+    function onMove(e: PointerEvent) {
+      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
+  useFrame((state) => {
+    if (reduce) return;
+    const { x, y } = pointer.current;
+    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, x * 0.85, 0.035);
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, y * 0.55, 0.035);
+    state.camera.lookAt(0, 0, 0);
+  });
+  return null;
+}
 
 function Orb({
   position,
@@ -68,10 +96,13 @@ export function FloatingUniverse3D() {
       <ambientLight intensity={1.1} />
       <directionalLight position={[5, 5, 5]} intensity={1.4} />
       <pointLight position={[-5, -3, 4]} intensity={12} color="#F28DB5" />
+      <Rig />
       <Orb position={[-3.4, 1.2, -1]} color="#65B8E8" scale={1.5} speed={1.4} />
       <Orb position={[3.6, -0.6, -0.5]} color="#F28DB5" scale={1.1} speed={1.8} />
       <Orb position={[1.4, 2.2, -2]} color="#9FD3F2" scale={0.7} speed={2.2} />
       <Orb position={[-1.2, -2.1, -1.5]} color="#FBE5EF" scale={0.85} speed={1.6} />
+      <Orb position={[-5.2, 2.6, -2.5]} color="#F6AECB" scale={0.55} speed={2.6} />
+      <Orb position={[5.0, -2.4, -2.2]} color="#65B8E8" scale={0.6} speed={2.4} />
       <PetalShape position={[4.4, 1.8, 0]} color="#F28DB5" />
       <PetalShape position={[-4.6, -1.4, 0.5]} color="#F6AECB" />
       <PetalShape position={[0.4, -2.6, -0.5]} color="#65B8E8" />
