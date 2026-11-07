@@ -8,9 +8,10 @@ import { PetalCanvas } from "@/components/experiments/PetalCanvas";
 import { GradientLab } from "@/components/experiments/GradientLab";
 import { OrbitType } from "@/components/experiments/OrbitType";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
-function Demo({ id, height }: { id: Experiment["id"]; height?: number }) {
-  if (id === "petal-physics") return <PetalCanvas height={height} />;
+function Demo({ id, height, controls }: { id: Experiment["id"]; height?: number; controls?: boolean }) {
+  if (id === "petal-physics") return <PetalCanvas height={height} controls={controls} />;
   if (id === "chromatic-drift") return <GradientLab />;
   return <OrbitType height={height} />;
 }
@@ -36,18 +37,23 @@ export function Experiments() {
   return (
     <section id="experiments" aria-label="Experiments" className="relative bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.3em] text-bloom uppercase">02 · Experiments</p>
-          <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
-            <h2 className="max-w-xl font-display text-4xl leading-[1.05] font-bold text-deep sm:text-6xl">
-              A collection of <span className="text-sky">living</span> experiments.
-            </h2>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHeading
+            index="02"
+            eyebrow="Experiments"
+            title={
+              <>
+                A collection of <span className="font-editorial font-medium text-sky italic">living</span> experiments.
+              </>
+            }
+          />
+          <Reveal delay={0.15}>
             <p className="max-w-sm text-ink/65">
               Three demonstrations, built by SKY &amp; BLOOM itself — not client
               work, not mockups. Each one runs right here. Open one and play.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {EXPERIMENTS.map((exp, i) => (
@@ -57,16 +63,17 @@ export function Experiments() {
               className={exp.tall ? "md:col-span-2 lg:col-span-1 lg:row-span-1" : ""}
             >
               <article
-                className={`group flex h-full flex-col overflow-hidden rounded-[2rem] border border-ice bg-gradient-to-b from-white to-ice/60 p-5 shadow-[0_10px_40px_rgba(36,101,143,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(36,101,143,0.16)] ${
+                className={`group flex h-full flex-col overflow-hidden rounded-[2rem] bg-gradient-to-b from-white to-ice/60 p-5 shadow-[0_10px_40px_rgba(36,101,143,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(36,101,143,0.16)] ${
                   i === 1 ? "lg:translate-y-8" : ""
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-display text-sm font-bold text-deep/40">{exp.index}</span>
-                  <span
-                    className="rounded-full px-3 py-1 text-[11px] font-bold tracking-wide text-white uppercase"
-                    style={{ background: exp.accent }}
-                  >
+                  <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide text-white uppercase" style={{ background: exp.accent }}>
+                    <span className="relative flex size-1.5" aria-hidden="true">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex size-1.5 rounded-full bg-white" />
+                    </span>
                     {exp.category}
                   </span>
                 </div>
@@ -127,7 +134,7 @@ export function Experiments() {
                 </button>
               </div>
               <div className="mt-6">
-                <Demo id={active.id} height={260} />
+                <Demo id={active.id} height={260} controls={active.id === "petal-physics"} />
               </div>
               <p className="mt-6 leading-relaxed text-ink/75">{active.detail}</p>
               <p className="mt-4 font-editorial text-lg text-deep/70 italic">

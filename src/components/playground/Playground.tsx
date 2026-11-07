@@ -5,8 +5,15 @@ import { motion } from "motion/react";
 import { Check, Copy, RotateCcw, Shuffle } from "lucide-react";
 import { PALETTE } from "@/lib/site";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { BloomFlower } from "@/components/effects/BloomFlower";
 import { FloatingUniverse2D } from "@/components/playground/FloatingUniverse2D";
+
+const COLOR_PRESETS = [
+  { name: "Sky Morning", bg: "#EAF5FC", accent: "#65B8E8", text: "#24658F" },
+  { name: "Bloom Dusk", bg: "#FBE5EF", accent: "#F28DB5", text: "#243747" },
+  { name: "Deep Night", bg: "#24658F", accent: "#F28DB5", text: "#FFFFFF" },
+] as const;
 
 const SHAPE_COLORS = ["#65B8E8", "#F28DB5", "#24658F", "#F6AECB", "#9FD3F2"];
 const SHAPES = [
@@ -70,18 +77,18 @@ export function Playground() {
     <section id="playground" aria-label="Playground" className="relative overflow-hidden bg-ice py-24 sm:py-32">
       <div aria-hidden="true" className="blob absolute -top-20 right-0 size-[380px] bg-bloom/15 blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="text-xs font-bold tracking-[0.3em] text-bloom uppercase">03 · Playground</p>
-              <h2 className="mt-4 max-w-xl font-display text-4xl leading-[1.05] font-bold text-deep sm:text-6xl">
-                Play with <span className="text-bloom">imagination.</span>
-              </h2>
-              <p className="mt-4 max-w-lg text-ink/65">
-                Nothing here is decorative. Every control changes something real —
-                colors, shapes, motion. Try it, break it, then put it back.
-              </p>
-            </div>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHeading
+            index="03"
+            eyebrow="Playground"
+            title={
+              <>
+                Play with <span className="font-editorial font-medium text-bloom italic">imagination.</span>
+              </>
+            }
+            description="Nothing here is decorative. Every control changes something real — colors, shapes, motion. Try it, break it, then put it back."
+          />
+          <Reveal delay={0.15}>
             <button
               type="button"
               onClick={resetAll}
@@ -90,8 +97,8 @@ export function Playground() {
               <RotateCcw className="size-4" aria-hidden="true" />
               Reset everything
             </button>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
           {/* A — Color Playground */}
@@ -120,6 +127,29 @@ export function Playground() {
               </div>
 
               <div className="mt-6 space-y-4">
+                <div className="flex flex-wrap gap-2" role="group" aria-label="Color combination presets">
+                  {COLOR_PRESETS.map((p) => {
+                    const isActive = color.bg === p.bg && color.accent === p.accent && color.text === p.text;
+                    return (
+                      <button
+                        key={p.name}
+                        type="button"
+                        onClick={() => setColor({ bg: p.bg, accent: p.accent, text: p.text })}
+                        aria-pressed={isActive}
+                        className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                          isActive ? "bg-deep text-white" : "bg-ice text-deep hover:bg-soft"
+                        }`}
+                      >
+                        <span className="flex -space-x-1" aria-hidden="true">
+                          {[p.bg, p.accent, p.text].map((c) => (
+                            <span key={c} className="size-3 rounded-full border border-white shadow-sm" style={{ background: c }} />
+                          ))}
+                        </span>
+                        {p.name}
+                      </button>
+                    );
+                  })}
+                </div>
                 {(["bg", "accent", "text"] as const).map((role) => (
                   <div key={role}>
                     <p className="mb-2 text-xs font-bold tracking-widest text-deep/60 uppercase">
@@ -175,7 +205,7 @@ export function Playground() {
                 <FloatingUniverse2D height={340} />
               </div>
               <p className="mt-4 text-center text-xs font-semibold tracking-widest text-deep/50 uppercase">
-                Pointer &amp; touch friendly
+                Tip · sweep your pointer — or finger — through the spheres
               </p>
             </article>
           </Reveal>
@@ -212,10 +242,13 @@ export function Playground() {
                   </button>
                 ))}
               </div>
+              <p className="mt-6 text-center text-xs font-semibold tracking-widest text-deep/50 uppercase">
+                Tip · tap the same shape again and again — it grows, turns, then shrinks back
+              </p>
               <button
                 type="button"
                 onClick={shuffleShapes}
-                className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-deep px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.03]"
+                className="mt-6 inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-deep px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.03]"
               >
                 <Shuffle className="size-4" aria-hidden="true" />
                 Shuffle all shapes

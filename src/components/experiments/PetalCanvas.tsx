@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Wind } from "lucide-react";
 
 type Petal = {
   x: number;
@@ -15,9 +16,14 @@ type Petal = {
 
 const COLORS = ["#F28DB5", "#F6AECB", "#65B8E8", "#9FD3F2", "#FFFFFF"];
 
-/** Petals drift down on a soft wind; the pointer gently pushes them away. */
-export function PetalCanvas({ height = 260 }: { height?: number }) {
+/** Petals drift down on a soft wind; the pointer gently pushes them away.
+ *  With `controls`, the visitor sets the wind strength and can send a gust
+ *  through the field — a small, honest physics toy. */
+export function PetalCanvas({ height = 260, controls = false }: { height?: number; controls?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const windRef = useRef(0.4);
+  const gustRef = useRef(0);
+  const [wind, setWind] = useState(0.4);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -57,13 +63,15 @@ export function PetalCanvas({ height = 260 }: { height?: number }) {
       h = el.height = height * devicePixelRatio;
     }
 
-    function tick(t: number) {
+    function tick() {
       context.clearRect(0, 0, w, h);
+      gustRef.current *= 0.94;
+      const drift = windRef.current * 1.4 * devicePixelRatio + gustRef.current;
       for (const p of petals) {
         p.y += p.speed;
         p.sway += 0.01;
-        p.x += Math.sin(p.sway) * 0.4 * devicePixelRatio;
-        p.angle += p.spin;
+        p.x += Math.sin(p.sway) * 0.4 * devicePixelRatio + drift;
+        p.angle += p.spin + drift * 0.002;
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const d = Math.hypot(dx, dy);
@@ -76,6 +84,8 @@ export function PetalCanvas({ height = 260 }: { height?: number }) {
           p.y = -20;
           p.x = Math.random() * w;
         }
+        if (p.x > w + 20) p.x = -20;
+        if (p.x < -20) p.x = w + 20;
         context.save();
         context.translate(p.x, p.y);
         context.rotate(p.angle);
@@ -88,7 +98,6 @@ export function PetalCanvas({ height = 260 }: { height?: number }) {
       }
       context.globalAlpha = 1;
       if (!reduced) raf = requestAnimationFrame(tick);
-      void t;
     }
 
     el.addEventListener("pointermove", onMove);
@@ -103,13 +112,48 @@ export function PetalCanvas({ height = 260 }: { height?: number }) {
     };
   }, [height]);
 
+  function gust() {
+    gustRef.current = 6 * devicePixelRatio;
+  }
+
   return (
-    <canvas
-      ref={ref}
-      style={{ height }}
-      className="w-full touch-none rounded-2xl bg-gradient-to-br from-ice to-soft"
-      role="img"
-      aria-label="Interactive canvas: petals drifting, move your pointer to push them"
-    />
+    <div>
+      <canvas
+        ref={ref}
+        style={{ height }}
+        className="w-full touch-none rounded-2xl bg-gradient-to-br from-ice to-soft"
+        role="img"
+        aria-label="Interactive canvas: petals drifting, move your pointer to push them"
+      />
+      {controls && (
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          <label className="flex min-w-44 flex-1 items-center gap-3 text-sm font-medium text-deep">
+            <Wind className="size-4 shrink-0 text-sky" aria-hidden="true" />
+            <span className="shrink-0">Wind</span>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={Math.round(wind * 100)}
+              onChange={(e) => {
+                const v = Number(e.target.value) / 100;
+                setWind(v);
+                windRef.current = v;
+              }}
+              className="w-full accent-[#65B8E8]"
+              aria-label="Wind strength"
+            />
+            <span className="w-9 shrink-0 text-right text-ink/60">{Math.round(wind * 100)}%</span>
+          </label>
+          <button
+            type="button"
+            onClick={gust}
+            className="cursor-pointer rounded-full bg-bloom px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-bloom/30 transition-transform hover:scale-[1.04]"
+          >
+            Send a gust
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

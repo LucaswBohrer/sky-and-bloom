@@ -3,17 +3,28 @@
 import { useMemo, useState } from "react";
 import { Check, Copy } from "lucide-react";
 
-/** Live gradient lab: hue + softness sliders, with a copyable CSS snippet. */
+const PRESETS = [
+  { name: "Sky Morning", hue: 12, soft: 55, type: "linear" as const },
+  { name: "Bloom Dusk", hue: 58, soft: 32, type: "linear" as const },
+  { name: "Deep Tide", hue: -32, soft: 72, type: "radial" as const },
+] as const;
+
+/** Live gradient lab: hue + softness sliders, presets, linear/radial,
+ *  with a copyable CSS snippet. */
 export function GradientLab() {
   const [hue, setHue] = useState(12);
   const [soft, setSoft] = useState(55);
+  const [type, setType] = useState<"linear" | "radial">("linear");
   const [copied, setCopied] = useState(false);
 
-  const css = useMemo(
+  const gradient = useMemo(
     () =>
-      `background: linear-gradient(${135 + hue}deg, #65B8E8 0%, #F28DB5 ${soft}%, #24658F 100%);`,
-    [hue, soft],
+      type === "linear"
+        ? `linear-gradient(${135 + hue}deg, #65B8E8 0%, #F28DB5 ${soft}%, #24658F 100%)`
+        : `radial-gradient(circle at 50% ${soft}%, #F28DB5 0%, #65B8E8 ${55 + hue / 2}%, #24658F 100%)`,
+    [hue, soft, type],
   );
+  const css = `background: ${gradient};`;
 
   async function copy() {
     try {
@@ -29,10 +40,46 @@ export function GradientLab() {
     <div className="flex flex-col gap-4">
       <div
         className="h-36 w-full rounded-2xl shadow-inner transition-all duration-200 sm:h-44"
-        style={{ background: `linear-gradient(${135 + hue}deg, #65B8E8 0%, #F28DB5 ${soft}%, #24658F 100%)` }}
+        style={{ background: gradient }}
         role="img"
         aria-label="Live gradient preview built from the SKY and BLOOM palette"
       />
+      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Gradient presets">
+        {PRESETS.map((p) => (
+          <button
+            key={p.name}
+            type="button"
+            onClick={() => {
+              setHue(p.hue);
+              setSoft(p.soft);
+              setType(p.type);
+            }}
+            aria-pressed={hue === p.hue && soft === p.soft && type === p.type}
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+              hue === p.hue && soft === p.soft && type === p.type
+                ? "bg-deep text-white"
+                : "bg-ice text-deep hover:bg-soft"
+            }`}
+          >
+            {p.name}
+          </button>
+        ))}
+        <div className="ml-auto flex rounded-full bg-ice p-1" role="group" aria-label="Gradient type">
+          {(["linear", "radial"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setType(t)}
+              aria-pressed={type === t}
+              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold capitalize transition-colors ${
+                type === t ? "bg-white text-deep shadow" : "text-deep/60"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="space-y-3">
         <label className="block text-sm font-medium text-deep">
           <span className="flex justify-between">

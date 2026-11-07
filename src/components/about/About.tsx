@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 import { BloomFlower } from "@/components/effects/BloomFlower";
+import { PALETTE } from "@/lib/site";
 import { Palette, MousePointerClick, Sparkles } from "lucide-react";
 
 const PILLARS = [
@@ -86,6 +87,32 @@ export function About() {
                 </Reveal>
               ))}
             </div>
+
+            <Reveal delay={0.1}>
+              <div className="mt-10">
+                <p className="text-xs font-bold tracking-[0.25em] text-deep/50 uppercase">
+                  The palette — nothing else enters the garden
+                </p>
+                <div className="mt-3 flex overflow-hidden rounded-2xl shadow-lg shadow-deep/10" role="list" aria-label="SKY and BLOOM color palette">
+                  {PALETTE.map((c) => (
+                    <div
+                      key={c.hex}
+                      role="listitem"
+                      className="group relative h-16 flex-1 transition-all duration-300 hover:flex-[1.8]"
+                      style={{ background: c.hex }}
+                      title={`${c.name} — ${c.hex} · ${c.role}`}
+                    >
+                      <span className="absolute inset-x-0 bottom-1 hidden text-center font-mono text-[9px] font-bold text-deep/70 group-hover:block">
+                        {c.hex}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-ink/50">
+                  Hover a stripe to reveal its hex — white ~50%, blues ~35%, pinks ~15%.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
