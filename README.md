@@ -43,17 +43,21 @@ No backend, no paid services, no environment variables required.
 
 ## Features
 
-- **Hero** — staggered text reveal, parallax on scroll, lazy 3D scene with translucent spheres and petals, interactive Bloom flower, scroll indicator.
+- **Hero 2.0** — cinematic centered composition, giant display type with a serif-italic gradient accent, full-bleed 3D scene with pointer parallax, scroll-driven scale/fade, floating interactive bloom, honest stats row, and a scroll cue with a travelling dot.
+- **Navigation** — scroll progress bar and scroll-spy underline that follows the section in view.
+- **Marquee** — editorial word strip between hero and experiments (pauses on hover and on reduced motion).
 - **Experiments** — asymmetric editorial grid with 3 original, functional demos, each with a detail modal:
-  1. **Petal Physics** — canvas petals with wind + pointer repulsion.
-  2. **Chromatic Drift** — live gradient lab with hue/softness sliders and copyable CSS.
-  3. **Orbit Type** — the letters of BLOOM orbiting your pointer.
+  1. **Petal Physics** — canvas petals with wind + pointer repulsion. The detail view adds a wind slider and a "Send a gust" button.
+  2. **Chromatic Drift** — live gradient lab with hue/softness sliders, three presets (Sky Morning, Bloom Dusk, Deep Tide), linear/radial toggle, and copyable CSS.
+  3. **Orbit Type** — the letters of BLOOM orbiting your pointer, rendered with direct DOM transforms (no per-frame React re-renders).
 - **Playground** — four working stations + global reset:
-  - **Color Playground** — mix background / accent / text from the palette, live preview, copyable hex + CSS.
+  - **Color Playground** — mix background / accent / text from the palette, three one-tap presets, live preview, copyable hex + CSS.
   - **Floating Universe** — 2D canvas bubbles at different depths, pointer & touch reactive.
   - **Interactive Shapes** — tap to cycle color, scale and rotation; shuffle all.
   - **Bloom Effect** — slider-driven flower bloom (also scroll-driven in About).
-- **Effects system** — Bloom Effect, Floating Universe (3D + 2D), Cursor Trail, Magnetic Buttons, morphing shapes, color playground. `prefers-reduced-motion` is respected everywhere; cursor trail and hover effects are disabled on touch devices.
+- **About** — editorial narrative, scroll-driven bloom, and an interactive palette strip (hover a stripe to reveal its hex).
+- **Motion system** — one shared easing, three durations and one stagger (`src/animations/motion.ts`); every section header uses the same `SectionHeading` component. `prefers-reduced-motion` is respected everywhere; cursor trail and hover effects are disabled on touch devices.
+- **SEO** — custom flower favicon, `theme-color`, `robots.txt` and `sitemap.xml`.
 - **About** — editorial narrative, scroll-driven bloom.
 - **Contact** — form + social links + full footer. The form has **no backend**: submitting composes a real email in the visitor's mail client (`mailto:`). Nothing is simulated.
 - **Responsive** — mobile-first, hamburger nav, no horizontal overflow, touch-sized targets. **Accessible** — semantic HTML, skip link, visible focus, labelled controls, keyboard-closable modal.
