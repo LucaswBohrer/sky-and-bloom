@@ -88,6 +88,16 @@ export function OrbitType({ height = 220 }: { height?: number }) {
       role="img"
       aria-label="Interactive typography: the letters of BLOOM orbit your pointer"
     >
+      <span
+        aria-hidden="true"
+        className="text-outline absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[5.5rem] font-bold tracking-tight opacity-[0.13] select-none sm:text-[7rem]"
+      >
+        BLOOM
+      </span>
+      <span
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-soft blur-2xl"
+      />
       {WORD.map((ch, i) => (
         <span
           key={i}

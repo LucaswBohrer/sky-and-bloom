@@ -25,7 +25,7 @@ const SHAPES = [
 
 type ShapeState = { color: number; scale: number; rotate: number };
 
-const DEFAULT_SHAPES: ShapeState[] = SHAPES.map(() => ({ color: 0, scale: 1, rotate: 0 }));
+const DEFAULT_SHAPES: ShapeState[] = SHAPES.map((_, i) => ({ color: i % SHAPE_COLORS.length, scale: 1, rotate: 0 }));
 const DEFAULT_COLOR = { bg: "#EAF5FC", accent: "#65B8E8", text: "#24658F" };
 
 export function Playground() {
@@ -117,12 +117,18 @@ export function Playground() {
               >
                 <p className="font-editorial text-2xl italic sm:text-3xl">“Color is the first word of this garden.”</p>
                 <p className="mt-3 text-sm opacity-75">Live preview — your combination, right now.</p>
-                <span
-                  className="mt-5 inline-block rounded-full px-4 py-2 text-xs font-bold tracking-widest text-white uppercase"
-                  style={{ background: color.accent }}
-                >
-                  Accent in action
-                </span>
+                {/* tiny interface mock, so the preview reads as a design, not an empty box */}
+                <div className="mt-5 rounded-2xl bg-white/55 p-4 backdrop-blur-sm" aria-hidden="true">
+                  <div className="h-3 w-2/3 rounded-full" style={{ background: color.text, opacity: 0.55 }} />
+                  <div className="mt-2.5 h-2.5 w-full rounded-full" style={{ background: color.text, opacity: 0.28 }} />
+                  <div className="mt-2 h-2.5 w-4/5 rounded-full" style={{ background: color.text, opacity: 0.18 }} />
+                  <span
+                    className="mt-4 inline-block rounded-full px-4 py-2 text-xs font-bold tracking-widest text-white uppercase"
+                    style={{ background: color.accent }}
+                  >
+                    Accent in action
+                  </span>
+                </div>
                 <pre className="mt-5 overflow-x-auto rounded-xl bg-white/70 p-3 font-mono text-[11px] text-deep">{comboCss}</pre>
               </div>
 
@@ -264,8 +270,11 @@ export function Playground() {
               <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink/65">
                 The signature of SKY &amp; BLOOM. Drag the slider and the petals open one by one.
               </p>
-              <div className="mt-4">
-                <BloomFlower size={230} open={bloom} label="Bloom flower opening with the slider" />
+              <div className="relative mt-2">
+                <div aria-hidden="true" className="absolute top-1/2 left-1/2 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/80 blur-2xl" />
+                <div className="relative">
+                  <BloomFlower size={280} open={bloom} label="Bloom flower opening with the slider" />
+                </div>
               </div>
               <label className="mt-2 w-full max-w-xs text-sm font-medium text-deep">
                 <span className="flex justify-between">

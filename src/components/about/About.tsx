@@ -41,11 +41,11 @@ export function About() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <Reveal className="relative order-2 lg:order-1">
-            <div className="blob mx-auto flex max-w-md flex-col items-center bg-ice px-8 py-12 text-center">
+            <div className="blob mx-auto flex max-w-md flex-col items-center bg-ice px-8 py-8 text-center">
               <motion.div style={{ scale: flowerScale }}>
-                <BloomFlower size={260} open={bloomOpen} label="Bloom flower opening as you scroll" />
+                <BloomFlower size={300} open={bloomOpen} label="Bloom flower opening as you scroll" />
               </motion.div>
-              <p className="mt-4 font-editorial text-2xl text-deep italic">
+              <p className="mt-1 font-editorial text-2xl text-deep italic">
                 It blooms as you scroll.
               </p>
               <p className="mt-1 text-sm text-ink/60">

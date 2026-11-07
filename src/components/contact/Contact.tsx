@@ -29,7 +29,7 @@ export function Contact() {
     "w-full rounded-2xl border border-deep/15 bg-white px-4 py-3.5 text-ink placeholder:text-ink/40 focus:border-sky focus:outline-none";
 
   return (
-    <section id="contact" aria-label="Contact" className="relative overflow-hidden bg-deep py-24 text-white sm:py-32">
+    <section id="contact" aria-label="Contact" className="relative overflow-hidden bg-deep pt-24 pb-12 text-white sm:pt-32">
       <div aria-hidden="true" className="blob absolute -top-32 -right-24 size-[420px] bg-sky/30 blur-3xl" />
       <div aria-hidden="true" className="blob absolute -bottom-40 -left-24 size-[420px] bg-bloom/25 blur-3xl" />
 
@@ -94,7 +94,7 @@ export function Contact() {
                     autoComplete="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Ada Lovelace"
+                    placeholder="Your name"
                     className={inputCls}
                   />
                 </div>
@@ -110,7 +110,7 @@ export function Contact() {
                     autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ada@example.com"
+                    placeholder="you@example.com"
                     className={inputCls}
                   />
                 </div>
@@ -143,14 +143,14 @@ export function Contact() {
                 </p>
               )}
               <p className="mt-4 text-center text-xs text-ink/50">
-                No backend is configured for this form — it opens your email client instead. See the README to connect one.
+                Your email app will open with the message ready to send — nothing is stored anywhere.
               </p>
             </form>
           </Reveal>
         </div>
       </div>
 
-      <footer className="relative mx-auto mt-20 max-w-7xl border-t border-white/15 px-5 pt-8 sm:px-8">
+      <footer className="relative mx-auto mt-14 max-w-7xl border-t border-white/15 px-5 pt-8 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <a href="#top" className="flex items-center gap-2" aria-label="SKY & BLOOM — back to top">
             <span className="grid size-9 place-items-center rounded-full bg-white/15 text-white">

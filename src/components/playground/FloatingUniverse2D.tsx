@@ -32,7 +32,7 @@ export function FloatingUniverse2D({ height = 320 }: { height?: number }) {
     let w = (el.width = el.clientWidth * devicePixelRatio);
     let h = (el.height = height * devicePixelRatio);
     const pointer = { x: -9999, y: -9999, active: false };
-    const bubbles: Bubble[] = Array.from({ length: 26 }, () => {
+    const bubbles: Bubble[] = Array.from({ length: 34 }, () => {
       const depth = 0.4 + Math.random() * 0.8;
       return {
         x: Math.random() * w,
@@ -81,7 +81,7 @@ export function FloatingUniverse2D({ height = 320 }: { height?: number }) {
         if (b.y < -b.r) b.y = h + b.r;
         if (b.y > h + b.r) b.y = -b.r;
 
-        context.globalAlpha = 0.28 + b.depth * 0.4;
+        context.globalAlpha = 0.38 + b.depth * 0.4;
         context.fillStyle = b.color;
         context.beginPath();
         context.arc(b.x, b.y, b.r, 0, Math.PI * 2);

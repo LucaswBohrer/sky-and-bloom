@@ -16,7 +16,7 @@ const FloatingUniverse3D = dynamic(
 const STATS = [
   { value: "03", label: "live experiments" },
   { value: "04", label: "playground stations" },
-  { value: "00", label: "templates used" },
+  { value: "07", label: "colors in the palette" },
 ] as const;
 
 /** Hero 2.0 — cinematic, centered, full-bleed 3D.
@@ -52,16 +52,23 @@ export function Hero() {
         <FloatingUniverse3D />
       </motion.div>
 
+      {/* soft veil behind the title: guarantees contrast no matter where
+          the 3D orbs drift, without hiding the sky around the words */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-1/2 z-[5] h-[560px] w-[900px] max-w-[110vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/55 blur-3xl"
+      />
+
       {/* floating bloom — the first thing you can touch */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 1, ease: EASE }}
-        className="absolute right-[6%] bottom-[16%] z-10 hidden xl:block"
+        className="absolute right-[5%] bottom-[14%] z-10 hidden xl:block"
         aria-hidden="false"
       >
         <div className="flex flex-col items-center">
-          <BloomFlower size={170} interactive label="Bloom flower — click to open and close it" />
+          <BloomFlower size={205} interactive label="Bloom flower — click to open and close it" />
           <span className="mt-1 text-[11px] font-semibold tracking-[0.25em] text-deep/50 uppercase">
             Click the bloom
           </span>
@@ -90,7 +97,7 @@ export function Hero() {
               A world
             </motion.span>
           </span>
-          <span className="block overflow-hidden pb-2">
+          <span className="block overflow-hidden pb-3">
             <motion.span
               className="inline-block"
               initial={{ y: "110%" }}

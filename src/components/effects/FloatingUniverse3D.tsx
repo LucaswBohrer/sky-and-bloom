@@ -97,15 +97,18 @@ export function FloatingUniverse3D() {
       <directionalLight position={[5, 5, 5]} intensity={1.4} />
       <pointLight position={[-5, -3, 4]} intensity={12} color="#F28DB5" />
       <Rig />
-      <Orb position={[-3.4, 1.2, -1]} color="#65B8E8" scale={1.5} speed={1.4} />
-      <Orb position={[3.6, -0.6, -0.5]} color="#F28DB5" scale={1.1} speed={1.8} />
-      <Orb position={[1.4, 2.2, -2]} color="#9FD3F2" scale={0.7} speed={2.2} />
-      <Orb position={[-1.2, -2.1, -1.5]} color="#FBE5EF" scale={0.85} speed={1.6} />
-      <Orb position={[-5.2, 2.6, -2.5]} color="#F6AECB" scale={0.55} speed={2.6} />
-      <Orb position={[5.0, -2.4, -2.2]} color="#65B8E8" scale={0.6} speed={2.4} />
-      <PetalShape position={[4.4, 1.8, 0]} color="#F28DB5" />
-      <PetalShape position={[-4.6, -1.4, 0.5]} color="#F6AECB" />
-      <PetalShape position={[0.4, -2.6, -0.5]} color="#65B8E8" />
+      {/* Orbs stay at the margins: the center belongs to the title. A bright
+          sphere behind dark type kills contrast, so nothing large or bright
+          floats where the words are. */}
+      <Orb position={[-4.6, 1.4, -1]} color="#65B8E8" scale={1.35} speed={1.4} />
+      <Orb position={[4.8, -0.9, -0.5]} color="#F28DB5" scale={1.0} speed={1.8} />
+      <Orb position={[-5.4, -2.2, -2]} color="#9FD3F2" scale={0.7} speed={2.2} />
+      <Orb position={[5.2, 2.4, -2]} color="#FBE5EF" scale={0.8} speed={1.6} />
+      <Orb position={[-3.2, 2.8, -2.5]} color="#F6AECB" scale={0.5} speed={2.6} />
+      <Orb position={[3.4, -2.6, -2.2]} color="#65B8E8" scale={0.55} speed={2.4} />
+      <PetalShape position={[5.6, 1.6, 0]} color="#F28DB5" />
+      <PetalShape position={[-5.8, -1.2, 0.5]} color="#F6AECB" />
+      <PetalShape position={[1.8, -3.0, -0.5]} color="#65B8E8" />
     </Canvas>
   );
 }

@@ -77,8 +77,8 @@ export function Experiments() {
                     {exp.category}
                   </span>
                 </div>
-                <div className="mt-5">
-                  <Demo id={exp.id} height={exp.id === "petal-physics" ? 220 : 200} />
+                <div className="mt-5 flex min-h-[260px] flex-col justify-center">
+                  <Demo id={exp.id} height={260} />
                 </div>
                 <h3 className="mt-6 font-display text-2xl font-bold text-deep">{exp.name}</h3>
                 <p className="mt-2 flex-1 leading-relaxed text-ink/65">{exp.description}</p>
