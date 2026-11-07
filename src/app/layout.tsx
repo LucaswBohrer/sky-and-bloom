@@ -23,11 +23,13 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sky-and-bloom.vercel.app"),
   title: "SKY & BLOOM — A world of creativity",
   description:
     "An immersive creative web experience exploring motion, interaction, color and digital experimentation. Where imagination meets interaction.",
   keywords: ["creative web", "interactive design", "motion", "three.js", "portfolio", "sky and bloom"],
   authors: [{ name: "SKY & BLOOM" }],
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "SKY & BLOOM — A world of creativity",
     description: "Where imagination meets interaction. An immersive creative web experience.",
@@ -38,6 +40,10 @@ export const metadata: Metadata = {
     title: "SKY & BLOOM — A world of creativity",
     description: "Where imagination meets interaction.",
   },
+};
+
+export const viewport = {
+  themeColor: "#EAF5FC",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

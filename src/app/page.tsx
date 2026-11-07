@@ -5,6 +5,7 @@ import { Playground } from "@/components/playground/Playground";
 import { About } from "@/components/about/About";
 import { Contact } from "@/components/contact/Contact";
 import { CursorTrail } from "@/components/effects/CursorTrail";
+import { Marquee } from "@/components/ui/Marquee";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <Marquee />
         <Experiments />
         <Playground />
         <About />
